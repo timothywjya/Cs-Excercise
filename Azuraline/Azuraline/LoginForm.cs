@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography;
 
 namespace Azuraline
 {
@@ -44,7 +45,7 @@ namespace Azuraline
 
                         if (count > 0) {
                             MessageBox.Show("Login berhasil! Welcome, " + username, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Dashboard dashpage = new Dashboard();
+                            MainMenu dashpage = new MainMenu();
                             dashpage.Show();
                             this.Hide();
                         }
@@ -86,7 +87,8 @@ namespace Azuraline
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Application.Exit();
         }
     }
 }
