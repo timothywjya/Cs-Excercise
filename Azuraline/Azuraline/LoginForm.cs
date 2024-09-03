@@ -29,31 +29,23 @@ namespace Azuraline
         {
             string username = UsernameInput.Text;
             string password = PasswordInput.Text;
+            try
+            {
+                UserManager userManager = new UserManager("MyDbConn");
 
-            try {
-                string connectionString = ConfigurationManager.ConnectionStrings["MyDbConn"].ConnectionString;
-                using (MySqlConnection connection = new MySqlConnection(connectionString)) {
-                    string query = "SELECT COUNT(*) FROM users WHERE username = @username AND password = @password";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@username", username);
-                        command.Parameters.AddWithValue("@password", password);
-
-                        connection.Open();
-                        int count = Convert.ToInt32(command.ExecuteScalar());
-
-                        if (count > 0) {
-                            MessageBox.Show("Login berhasil! Welcome, " + username, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            MainMenu dashpage = new MainMenu();
-                            dashpage.Show();
-                            this.Hide();
-                        }
-                        else {
-                            MessageBox.Show("Username atau password salah.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                if (userManager.Login(username, password))
+                {
+                    MessageBox.Show("Login berhasil! Welcome, " + username, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MainMenu dashpage = new MainMenu();
+                    dashpage.Show();
+                    this.Hide();
                 }
+                else
+                {
+                    MessageBox.Show("Login gagal, coba lagi.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            
             } catch (Exception ex) {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -89,6 +81,11 @@ namespace Azuraline
         {
             this.Hide();
             Application.Exit();
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
